@@ -11375,5 +11375,7 @@ textarea.form-control-lg {
 .small {
   font-size: 0.875rem !important;
 }
-
+.contenmar {
+    padding-right: 130px;
+}
 

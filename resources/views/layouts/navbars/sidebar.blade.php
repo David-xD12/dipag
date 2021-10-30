@@ -18,7 +18,7 @@
                     <p>{{ __('Noticias') }}</p>
                 </a>
             </li>
-            <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
+           {{--  <li class="nav-item {{ ($activePage == 'profile' || $activePage == 'user-management') ? ' active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="true">
                     <i><img style="width:25px" src="{{ asset('/img/laravel.svg') }}"></i>
                     <p>{{ __('Laravel Examples') }}
@@ -41,19 +41,37 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+            </li> --}}
+            @if (auth()->user()->hasRoles(['admin']) )
+            <li class="nav-item {{ ($activePage == 'table' || $activePage == 'user-management') ? ' active' : '' }}">
+                <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="true">
+                    <i><img style="width:25px" src="{{ asset('/img/laravel.svg') }}"></i>
+                    <p>{{ __('Tecnicos') }}
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse show" id="laravelExample">
+                    <ul class="nav">
 
-          @if (auth()->user()->hasRoles(['admin']) )
-          <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
-            <a class="nav-link" href="{{ route('tecnico.index') }}">
-                <i class="material-icons">content_paste</i>
-                <p>{{ __('Actualizar tecnico') }}</p>
-            </a>
-        </li>
-          @endif
+                        <li class="nav-item{{ $activePage == 'table' ? ' active' : '' }}">
+                            <a class="nav-link" href="{{ route('tecnico.index') }}">
+                                <i class="material-icons">content_paste</i>
+                                <p>{{ __('Actualizar tecnico') }}</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item{{ $activePage == 'user-management' ? ' active' : '' }}">
+                            <a class="nav-link" href="{{ route('categories.index') }}">
+                                <i class="material-icons">content_paste</i>
+                                 <span class="sidebar-normal">{{ __('Categoria') }}</span>
+                            </a>
+                        </li>
 
 
-
+                    </ul>
+                </div>
+                </li>
+                @endif
             <li class="nav-item{{ $activePage == 'typography' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('historical.show', auth()->user()->id) }}">
                     <i class="material-icons">library_books</i>
@@ -80,14 +98,14 @@
             </li>
             <li class="nav-item{{ $activePage == 'language' ? ' active' : '' }}">
                 {{-- <a class="nav-link" href="{{ route('language') }}"> --}}
-                <i class="material-icons">language</i>
-                <p>{{ __('Audiencias') }}</p>
+                    <i class="material-icons">language</i>
+                    <p>{{ __('Audiencias') }}</p>
                 </a>
             </li>
             <li class="nav-item active-pro{{ $activePage == 'upgrade' ? ' active' : '' }}">
                 {{-- <a class="nav-link text-white bg-danger" href="{{ route('upgrade') }}"> --}}
-                <i class="material-icons text-white">unarchive</i>
-                <p>{{ __('Vacaciones') }}</p>
+                    <i class="material-icons text-white">unarchive</i>
+                    <p>{{ __('Vacaciones') }}</p>
                 </a>
             </li>
         </ul>

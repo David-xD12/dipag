@@ -40,6 +40,7 @@ class User extends Authenticatable
         'category_id',
         'id_safe',
         'section_id',
+        'buscar'
 
 
 
@@ -78,6 +79,10 @@ class User extends Authenticatable
     public function section()
     {
         return $this->hasMany(Section::class);
+    }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     //Scope
