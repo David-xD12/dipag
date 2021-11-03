@@ -33,7 +33,7 @@
 
                 <!-- Current Profile Photo -->
                 <div class="mt-2" x-show="! photoPreview">
-                    <img src="{{ $this->user->profile_photo_url }}" class="rounded-circle" height="80px" width="80px">
+                    <img src="{{ $this->user->profile_photo_url }}" class="rounded-circle" height="100px" width="100px">
                 </div>
 
                 <!-- New Profile Photo Preview -->
@@ -44,7 +44,7 @@
                 <x-jet-secondary-button class="mt-2 me-2" type="button" x-on:click.prevent="$refs.photo.click()">
                     {{ __('Select A New Photo') }}
 				</x-jet-secondary-button>
-				
+
 				@if ($this->user->profile_photo_path)
                     <x-jet-secondary-button type="button" class="mt-2" wire:click="deleteProfilePhoto">
                         <div wire:loading wire:target="deleteProfilePhoto" class="spinner-border spinner-border-sm" role="status">

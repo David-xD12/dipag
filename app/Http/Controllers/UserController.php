@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\Section;
 use App\Models\Category;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Middleware\CheckRoles;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Expr\AssignOp\Concat;
 
 class UserController extends Controller
 {
@@ -29,40 +30,17 @@ class UserController extends Controller
     public function index(Request $request)
     {
 
-        /*  $name = $user->get('name');
-        $proceedings = $user->get('proceedings'); */
 
-        //$categories = Category::pluck('category');
-         /*  $categories = DB::select(
-            'SELECT categories.*,
-            CONCAT(users.name) AS user_name
-            FROM categories, users
-            WHERE categories.id = users.category_id
-            ORDER BY `user_name` DESC'
-
-          $categories = DB::select(
-            'SELECT users.*,
-             CONCAT(categories.category) AS category_name
-             FROM users AS u
-       left JOIN roles AS r
-       ON r.id = u.id;
-
-       SELECT u.name, u.user, u.email, u.profile_photo_path, u.rol, u.`status`, r.id, r.nombre
-       FROM users AS u
-       left JOIN roles AS r
-       ON r.id = u.id;
-
-        ); */
 
         $buscar = $request->get('buscar');
-        $users = DB::table('users')
-            ->select('id', 'name', 'proceedings', 'category_id')
+         $users = DB::table('users')
+            ->select('id', 'name', 'proceedings','email','email','category_id','updated_at')
             ->where('name', 'LIKE', '%' . $buscar . '%')
             ->orWhere('proceedings', 'LIKE', '%' . $buscar . '%')
             ->orderBy('id', 'ASC')
-            ->paginate(4)
-            ;
-        return view('tecnico.index', compact('users', 'buscar'));
+            ->paginate(10);
+
+        return view('tecnico.index', compact('users','buscar'));
     }
 
     /**
@@ -99,7 +77,7 @@ class UserController extends Controller
             'password' => 'required',
         ]);
 
-        $user = new User();
+        $user = new User($message);
 
         $user->name = $request->get('name');
         $user->proceedings = $request->get('proceedings');
@@ -133,12 +111,12 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function edit(Request $request,User $user)
     {
         return view('tecnico.edit', [
             'user' => $user,
             'sections' => Section::pluck('name', 'id'),
-            'categories' => Category::pluck('category', 'id')
+            'categories' => Category::pluck('category', 'id'),
         ]);
     }
 
@@ -149,18 +127,18 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(User $user)
     {
-        $user =  User::find($id);
+        $user->update([
+            'name' => request('name'),
+            'proceedings' => request('proceedings'),
+            'email' => request('email'),
+            'workplace' => request('workplace'),
+            'abilities' => request('abilities'),
+            'notes' => request('notes'),
+            'password' => request('password')
 
-        $user->name = $request->get('name');
-        $user->proceedings = $request->get('proceedings');
-        $user->email = $request->get('email');
-        $user->workplace = $request->get('workplace');
-        $user->abilities = $request->get('abilities');
-        $user->notes = $request->get('notes');
-        $user->password = Hash::make($request->get('password'));
-        $user->save();
+        ]);
 
         return redirect()->route('tecnico.index');
     }
@@ -173,39 +151,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-    }
-    public function category(Request $request,User $user)
-    {
-        $buscar = $request->get('buscar');
-        /* $users = DB::select(
-            'SELECT users.*,
-            CONCAT(categories.category) AS category_name
-            FROM users, categories
-            WHERE users.category_id = categories.id
-            ORDER BY `id` ASC'
-        ) ; */
 
-        /*  $categories = DB::select(
-            'SELECT categories.*,
-            CONCAT(users.name) AS user_name
-            FROM categories, users
-            WHERE categories.id = users.category_id
-            ORDER BY `user_name` DESC'
-        ); */
-        /*  $users = DB::table('users')
-            ->select('id', 'name', 'proceedings')
-            ->where('name', 'LIKE', '%' . $buscar . '%')
-            ->orWhere('proceedings', 'LIKE', '%' . $buscar . '%')
-            ->orderBy('id', 'ASC')
-            ->paginate(4); */
+    }
+   public function category(Request $request,User $user)
+    {
+
         return view('tecnico.category', [
             'user' => $user,
+            'roles'=> Role::pluck('name', 'id'),
             'categories' => Category::pluck('category', 'id')
         ]);
     }
     public function category_update(Request $request, $id)
     {
         $user =  User::find($id);
+        $user->actAdmin = $request->get('actAdmin');
+        $user->fechaAct = $request->get('fechaAct');
         $user->category_id = $request->get('category_id');
         $user->save();
         return redirect()->route('tecnico.index');

@@ -2,33 +2,46 @@
 
 @section('content')
 <div class="content">
-    <div class="container" style="background-color:#ffff">
-        <div class="row">
-           
-            <ul class="list-group list-group-horizontal" >
-                
-                <li class="list-group-item active" aria-current="true">Numero de Escalafón</li>
-                <li class="list-group-item active" aria-current="true">Numero de Escalafón</li>
-                <li class="list-group-item active" aria-current="true">Expediente</li>
-                <li class="list-group-item active" aria-current="true">Especialidad</li>
-                <li class="list-group-item active" aria-current="true"> Recomendado actual</li>
-                <li class="list-group-item active" aria-current="true">Vencimiento de Recomendado actual</li>
-                <li class="list-group-item active" aria-current="true">Fecha de ultima recomendación </li>
-                <li class="list-group-item active" aria-current="true"> Fecha de ingreso de ultimo recomendado</li>
-              </ul>
-              @csrf
-              <ul class="list-group list-group-horizontal-sm">
-                <li class="list-group-item" style="color: #0000"></li>
-                <li class="list-group-item">{{ auth()->user()->name }}</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A third item</li>
-              </ul>
-            </div>
+    <div class="container table-responsive" >
+        <h2 class="card-title">Historico de recomendaciones </h2><br><br>
+        <div >
+            <table  class="table table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">N° de escalafon</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Expediente</th>
+                    <th scope="col">Recomendado actual</th>
+                    <th scope="col">Vencimiento de recmendacion</th>
+                    <th scope="col">Fecha ultima recomendacion</th>
+                    <th scope="col">fechs de ingreso recomendado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+
     </div>
 </div>
 
-  @endsection
+@endsection

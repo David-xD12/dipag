@@ -25,6 +25,8 @@ class CreateUsersTable extends Migration
             $table->integer('nsession')->nullable();
             $table->string('password')->nullable();
             $table->integer('role_id')->nullable();
+            $table->string('actAdmin')->nullable();
+            $table->string('fechaAct')->nullable();
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

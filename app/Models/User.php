@@ -40,7 +40,11 @@ class User extends Authenticatable
         'category_id',
         'id_safe',
         'section_id',
-        'buscar'
+        'buscar',
+        'actAdmin',
+        'fechaAct',
+        'updated_at'
+
 
 
 
@@ -84,6 +88,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Category::class);
     }
+
 
     //Scope
 

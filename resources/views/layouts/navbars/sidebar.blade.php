@@ -42,7 +42,7 @@
                     </ul>
                 </div>
             </li> --}}
-            @if (auth()->user()->hasRoles(['admin']) )
+            @if (auth()->user()->hasRoles(['admin','Geren']) )
             <li class="nav-item {{ ($activePage == 'table' || $activePage == 'user-management') ? ' active' : '' }}">
                 <a class="nav-link" data-toggle="collapse" href="#laravelExample" aria-expanded="true">
                     <i><img style="width:25px" src="{{ asset('/img/laravel.svg') }}"></i>
