@@ -88,7 +88,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Category::class);
     }
-
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class);
+    }
 
     //Scope
 

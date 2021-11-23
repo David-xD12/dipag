@@ -1,12 +1,18 @@
 @extends('layouts.main', ['activePage' => 'dashboard', 'titlePage' => __('Dashboard')])
 
 @section('content')
+    <script>
+        function enviarforms(){
+            document.formulario1.submit();
+            document.formulario2.submit();
 
+        }
+    </script>
 <div class="content">
     <div class="container-fluid">
-        <div class="col-lg-9 col-md-12">
+        <div class="col-lg-10 col-md-12">
             <h1>Actualizacion de datos</h1>
-            <form class="row g-3 navbar" method="POST" action="/tecnico.update/ {{$user}}" >
+            <form class="row g-3 navbar" method="POST" action="{{ route('tecnico.update',$user->id) }}" >
                 @csrf
                 @method('PUT')
                 <div class="col-md-4">
@@ -75,16 +81,36 @@
                     <label for="notes" class="form-label">Notas</label>
                     <input type="text" class="form-control" id="notes" name="notes" value="{{ $user->notes }}">
                 </div>
-                <div class="col-md-6">
-                    <label for="password" class="form-label">Actualizar contraseña</label>
-                    <input type="text" class="form-control" id="password" name="password" value="{{ $user->password }}">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox"  name="restablecer" id="restablecer" {{ old('restablecer') ? 'checked' : '' }}> {{ __('Restablecer contraseña') }}
+                        <span class="form-check-sign"><span class="check"></span></span>
+                    </label>
                 </div>
 
                 <br>
                 <div class="col-12">
                     <button class="btn btn-primary" type="submit">Guardar</button>
                 </div>
+
             </form>
+           {{-- <div class="col-lg-10 col-md-12" style="background-color: #ffff">
+                <h3>Restablece contraseña</h3>
+                <form method="POST" action="{{ route('tecnico.update_password_user',$user->id) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3 row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPassword" name="inputPassword">
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>--}}
         </div>
     </div>
 </div>

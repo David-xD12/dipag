@@ -22,6 +22,7 @@ class UserController extends Controller
             'roles:admin'
         ]);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,16 +32,15 @@ class UserController extends Controller
     {
 
 
-
         $buscar = $request->get('buscar');
-         $users = DB::table('users')
-            ->select('id', 'name', 'proceedings','email','email','category_id','updated_at')
+        $users = DB::table('users')
+            ->select('id', 'name', 'proceedings', 'email', 'email', 'category_id', 'updated_at')
             ->where('name', 'LIKE', '%' . $buscar . '%')
             ->orWhere('proceedings', 'LIKE', '%' . $buscar . '%')
             ->orderBy('id', 'ASC')
             ->paginate(10);
 
-        return view('tecnico.index', compact('users','buscar'));
+        return view('tecnico.index', compact('users', 'buscar'));
     }
 
     /**
@@ -53,14 +53,15 @@ class UserController extends Controller
         return view('tecnico.create', [
             'user' => new User,
             'sections' => Section::pluck('name', 'id'),
-            'categories' => Category::pluck('category', 'id')
+            'categories' => Category::pluck('category', 'id'),
+            'roles' => Role::pluck('name', 'id')
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -73,8 +74,8 @@ class UserController extends Controller
             'workplace' => 'required',
             'section_id' => 'required',
             'abilities' => 'required',
-            'notes' => 'required|min:5',
-            'password' => 'required',
+            'rol_id' => 'required',
+            'notes' => 'required|min:5'
         ]);
 
         $user = new User($message);
@@ -87,7 +88,8 @@ class UserController extends Controller
         $user->section_id = $request->get('section_id');
         $user->abilities = $request->get('abilities');
         $user->notes = $request->get('notes');
-        $user->password = Hash::make($request->get('password'));
+        $user->rol_id = $request->get('rol_id');
+        $user->password = Hash::make('12345678');
 
         $user->save();
 
@@ -97,7 +99,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -108,10 +110,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request,User $user)
+    public function edit(Request $request, User $user)
     {
         return view('tecnico.edit', [
             'user' => $user,
@@ -123,22 +125,29 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(User $user)
+    public function update(Request $request, $id)
     {
-        $user->update([
-            'name' => request('name'),
-            'proceedings' => request('proceedings'),
-            'email' => request('email'),
-            'workplace' => request('workplace'),
-            'abilities' => request('abilities'),
-            'notes' => request('notes'),
-            'password' => request('password')
+        $user = User::find($id);
 
-        ]);
+        $user->name = $request->get('name');
+        $user->proceedings = $request->get('proceedings');
+        $user->email = $request->get('email');
+        $user->workplace = $request->get('workplace');
+        $user->abilities = $request->get('abilities');
+        $user->notes = $request->get('notes');
+        $user->password = Hash::make($request->get('inputPassword'));
+        $restablecer=$request->input('restablecer');
+
+        if ($restablecer == true){
+            $user->password = Hash::make('123456789');
+        }
+
+        $user->save();
+
 
         return redirect()->route('tecnico.index');
     }
@@ -146,29 +155,39 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
+        $user = User::find($id);
+        $user->delete();
 
+        return redirect()->route('tecnico.index');
     }
-   public function category(Request $request,User $user)
-    {
 
+    public function category(Request $request, User $user)
+    {
         return view('tecnico.category', [
             'user' => $user,
-            'roles'=> Role::pluck('name', 'id'),
+            'roles' => Role::pluck('name', 'id'),
             'categories' => Category::pluck('category', 'id')
         ]);
     }
+
     public function category_update(Request $request, $id)
     {
-        $user =  User::find($id);
+        $user = User::find($id);
         $user->actAdmin = $request->get('actAdmin');
         $user->fechaAct = $request->get('fechaAct');
         $user->category_id = $request->get('category_id');
         $user->save();
         return redirect()->route('tecnico.index');
+    }
+    public function update_password_user(Request $request, $id){
+        $user = User::find($id);
+
+        $user->save();
+
     }
 }

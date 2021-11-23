@@ -17,13 +17,13 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="disabledTextInput" class="form-label">Administrador </label>
-                            <input type="text" class="form-control" placeholder="First name" value="{{ auth()->user()->name }}"
+                            <input type="text" class="form-control"  value="{{ $user->actAdmin }}"
                                 disabled><br>
                         </div>
                         <div class="col-md-6">
                             <label for="disabledTextInput" class="form-label">Ultima Actualizacion </label>
-                            <input type="text" id="updated_at" name="updated_at" class="form-control" placeholder="Last name"
-                                value="{{ $user->updated_at }}" disabled><br>
+                            <input type="text" id="update" name="update" class="form-control"
+                                value="{{ $user->fechaAct }}" disabled><br>
                         </div>
                     </div>
 
@@ -35,20 +35,20 @@
                     <div class="row g-3">
                         <div class="col-md-5">
                             <label for="disabledTextInput" class="form-label">Administrador </label>
-                            <input type="text" class="form-control" id="actAdmin" name="actAdmin"   value="{{ auth()->user()->name }}"
-                                disabled><br>
+                            <input type="text" class="form-control" id="actAdmin" name="actAdmin"  value="{{ auth()->user()->name }}"  >
+                            <br>
                         </div>
                         <div class="col-md-5">
                             <label for="disabledTextInput" class="form-label">Ultima Actualizacion </label>
-                            <input type="text" id="updated" name="updated" class="form-control" placeholder="Last name"
-                                value="{{ $user->updated_at }}" ><br>
+                            <input type="date" id="fechaAct" name="fechaAct" class="form-control" placeholder="Last name"
+                                value="{{ old('fechaAct',date('Y-m-d') )  }}" ><br>
                         </div>
                         <div class="col-md-5">
                             <label for="disabledTextInput" class="form-label">Nombre </label>
                             <input type="text" id="disabledTextInput" class="form-control" value="{{ $user->name }}"
-                                disabled><br>
+                                disabled><br><br>
                         </div>
-                        <div class="col-md- ">
+                        <div class="col-md-5">
                             <label for="category_id" class="form-label">Categoria</label><br>
                             <select class="form-select form-select-sm" id="category_id" name="category_id"
                                 aria-label="Default select example" required>
@@ -70,6 +70,7 @@
             <div class="col-md-12">
                 <button class="btn btn-primary" type="submit">Guardar</button>
             </div>
+                <br>
         </div>
         </form>
 
